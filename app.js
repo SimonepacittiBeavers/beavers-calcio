@@ -68,14 +68,19 @@ async function boot(){
     $("#loginHint").textContent="Modalità demo locale: i dati restano nel browser. Per il multi-allenatore configura Firebase.";
   }
   console.log("DEMO: app.js caricato");
-  $("#demoBtn").onclick=function(e){
+ document.getElementById("demoBtn").onclick=function(e){
   e.preventDefault();
-    demoMode = true;
+
   currentUser={
     displayName:"Mister Demo",
     email:"demo@beavers.local"
   };
+
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+
   showApp();
+};
 };
   $("#logoutBtn").onclick=async()=>{if(auth&&window.fb) await window.fb.signOut(auth); else showLogin();};
   document.querySelectorAll(".nav-btn[data-view]").forEach(b=>b.onclick=()=>navigate(b.dataset.view));
