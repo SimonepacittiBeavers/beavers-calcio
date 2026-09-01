@@ -24,6 +24,72 @@
     .match{background:#101010;color:white}.match strong{color:#f5c400}
     footer{background:#080808;color:white;padding:35px 7%;text-align:center;border-top:2px solid #f5c400}
     @media(max-width:800px){nav{display:none}.grid{grid-template-columns:1fr}.hero{min-height:65vh}}
+    .rosa-section {
+  padding: 60px 7%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.rosa-section h2 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.rosa-intro {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 35px;
+}
+
+.categorie {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.categoria {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,.08);
+  border-top: 5px solid #f5c400;
+}
+
+.categoria-header {
+  background: #080808;
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.categoria-header span {
+  font-size: 28px;
+}
+
+.categoria-header h3 {
+  margin: 0;
+  color: #f5c400;
+  font-size: 22px;
+}
+
+.giocatori {
+  padding: 20px;
+}
+
+.giocatore {
+  padding: 15px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  color: #777;
+}
+
+@media (max-width: 800px) {
+  .categorie {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
@@ -66,6 +132,13 @@
 
  <section id="rosa" class="rosa-section">
   <h2>La nostra rosa</h2>
+  <p class="rosa-intro">
+    Scopri le nostre squadre e i giovani talenti dei Beavers Calcio.
+  </p>
+
+ <section id="rosa" class="rosa-section">
+  <h2>La nostra rosa</h2>
+
   <p class="rosa-intro">
     Scopri le nostre squadre e i giovani talenti dei Beavers Calcio.
   </p>
