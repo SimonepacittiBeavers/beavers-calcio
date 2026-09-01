@@ -25,7 +25,6 @@ function loadLocal(){
   const raw = localStorage.getItem("beaversData");
   if(raw) return JSON.parse(raw);
   return {
-    return {
   players:[],
   trainings:[],
   trainingRecords:[],
