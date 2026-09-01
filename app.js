@@ -230,13 +230,22 @@ async function handleExcel(e){
       const ws=wb.Sheets["ANAGRAFICA GIOCATORE"]||wb.Sheets[wb.SheetNames[0]];
       const rows=XLSX.utils.sheet_to_json(ws,{defval:null,raw:true});
       local.players = local.players.filter(p => p.sourceExcel !== file.name);
+const filename = file.name.toLowerCase().trim();
 
-      const filename=file.name.toLowerCase();
-      let teamId;
-      if(filename.includes("alliev")) teamId="allievi";
-      else if(filename.includes("giovan")) teamId="giovanissimi";
-      else if(filename.includes("pura")) teamId="esordienti-puro";
-      else if(filename.includes("misto")) teamId="esordienti-misto";
+let teamId = "";
+
+if (filename.includes("alliev")) {
+  teamId = "allievi";
+} else if (filename.includes("giovan")) {
+  teamId = "giovanissimi";
+} else if (filename.includes("pura")) {
+  teamId = "esordienti-puro";
+} else if (filename.includes("misto")) {
+  teamId = "esordienti-misto";
+} else {
+  toast(`File non riconosciuto: ${file.name}`);
+  continue;
+}
       else teamId="esordienti-misto";
 
       for(const r of rows){
