@@ -68,16 +68,15 @@ async function boot(){
     $("#loginHint").textContent="Modalità demo locale: i dati restano nel browser. Per il multi-allenatore configura Firebase.";
   }
   console.log("DEMO: app.js caricato");
- document.getElementById("demoBtn").onclick=function(e){
+document.getElementById("demoBtn").onclick=function(e){
   e.preventDefault();
+
+  demoMode=true;
 
   currentUser={
     displayName:"Mister Demo",
     email:"demo@beavers.local"
   };
-
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
 
   showApp();
 };
