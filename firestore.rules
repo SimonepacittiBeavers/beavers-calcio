@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // MVP: ogni utente autenticato può leggere/scrivere i dati.
+    // Prima di usare l'app con dati reali, restringere l'accesso per ruolo/squadra.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

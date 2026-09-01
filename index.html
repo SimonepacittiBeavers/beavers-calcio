@@ -3,337 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Beavers Calcio</title>
-  <meta name="description" content="Beavers Calcio — passione, squadra, carattere.">
-  <style>
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f4f4;color:#151515}
-    header{position:sticky;top:0;z-index:10;background:#080808;color:white;display:flex;align-items:center;justify-content:space-between;padding:14px 5%;border-bottom:2px solid #f5c400}
-    .brand{font-weight:900;font-size:22px;color:#f5c400;letter-spacing:1px}
-    nav a{color:white;text-decoration:none;margin:0 12px;font-weight:700;font-size:14px}
-    nav a:hover{color:#f5c400}
-    .hero{min-height:72vh;background:#111 url('assets/hero-design.png') center/cover no-repeat;display:flex;align-items:flex-end}
-    .overlay{width:100%;padding:80px 7%;background:linear-gradient(transparent,rgba(0,0,0,.82));color:white}
-    .overlay h1{font-size:clamp(46px,8vw,92px);margin:0;color:white;line-height:.9}
-    .overlay h1 span{color:#f5c400}.overlay p{font-size:20px;max-width:650px}
-    .btn{display:inline-block;background:#f5c400;color:#111;text-decoration:none;padding:14px 22px;font-weight:900;border-radius:5px}
-    section{padding:60px 7%;max-width:1200px;margin:auto}
-    h2{font-size:34px;margin-top:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .card{background:white;padding:25px;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
-    .card h3{margin-top:0;color:#111}.accent{border-top:5px solid #f5c400}
-    .match{background:#101010;color:white}.match strong{color:#f5c400}
-    footer{background:#080808;color:white;padding:35px 7%;text-align:center;border-top:2px solid #f5c400}
-    @media(max-width:800px){nav{display:none}.grid{grid-template-columns:1fr}.hero{min-height:65vh}}
-    .rosa-section {
-  padding: 60px 7%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.rosa-section h2 {
-  font-size: 38px;
-  margin-bottom: 10px;
-}
-
-.rosa-intro {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 35px;
-}
-
-.categorie {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-}
-
-.categoria {
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 4px 18px rgba(0,0,0,.08);
-  border-top: 5px solid #f5c400;
-}
-
-.categoria-header {
-  background: #080808;
-  color: white;
-  padding: 20px 25px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.categoria-header span {
-  font-size: 28px;
-}
-
-.categoria-header h3 {
-  margin: 0;
-  color: #f5c400;
-  font-size: 22px;
-}
-
-.giocatori {
-  padding: 20px;
-}
-
-.giocatore {
-  padding: 15px;
-  background: #f7f7f7;
-  border-radius: 8px;
-  color: #777;
-}
-
-@media (max-width: 800px) {
-  .categorie {
-    grid-template-columns: 1fr;
-  }
-}
-  </style>
+  <title>Beavers Calcio — Area Allenatori</title>
+  <link rel="icon" href="logo.jpeg">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  <div class="brand">🐻 BEAVERS CALCIO</div>
-  <nav>
-    <a href="#home">HOME</a><a href="#chi-siamo">CHI SIAMO</a><a href="#rosa">ROSA</a>
-    <a href="#partite">PARTITE</a><a href="#news">NEWS</a><a href="#contatti">CONTATTI</a>
-  </nav>
-</header>
-
-<main>
-  <section id="home" class="hero">
-    <div class="overlay">
-      <h1>BEAVERS <span>CALCIO</span></h1>
-      <p><b>PASSIONE. SQUADRA. CARATTERE.</b><br>
-      Non siamo solo una squadra. Siamo una famiglia, dentro e fuori dal campo.</p>
-      <a class="btn" href="#chi-siamo">SCOPRI DI PIÙ →</a>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <img src="logo.jpeg" class="login-logo" alt="Beavers Calcio">
+      <h1>Beavers Calcio</h1>
+      <p>Area Allenatori</p>
+      <button id="loginBtn" class="btn btn-primary">Accedi</button>
+      <button id="demoBtn" class="btn btn-secondary">Entra in modalità demo</button>
+      <small id="loginHint">La modalità cloud richiede la configurazione Firebase indicata nel README.</small>
     </div>
-  </section>
-
-  <section id="chi-siamo">
-    <h2>La nostra identità</h2>
-    <div class="grid">
-      <div class="card accent"><h3>⚽ PASSIONE</h3><p>Viviamo il calcio con cuore, energia e voglia di migliorare.</p></div>
-      <div class="card accent"><h3>🤝 SQUADRA</h3><p>Uniti dentro e fuori dal campo. Prima la squadra, sempre.</p></div>
-      <div class="card accent"><h3>🎯 OBIETTIVI</h3><p>Lavoriamo ogni giorno per crescere e raggiungere nuovi traguardi.</p></div>
-    </div>
-  </section>
-
-  <section id="partite">
-    <h2>Prossima partita</h2>
-    <div class="card match">
-      <h3>BEAVERS CALCIO <strong>VS</strong> RED FOX FC</h3>
-      <p>📅 Domenica 26 Maggio — 15:00</p>
-      <p>📍 Campo Comunale, Via dello Sport 1</p>
-      <a class="btn" href="#contatti">INFO PARTITA</a>
-    </div>
-  </section>
-
- <section id="rosa" class="rosa-section">
-  <h2>La nostra rosa</h2>
-
-  <p class="rosa-intro">
-    Scopri le nostre squadre e i giovani talenti dei Beavers Calcio.
-  </p>
-
-  <div class="categorie">
-
-    <!-- ALLIEVI -->
-    <div class="categoria">
-      <div class="categoria-header">
-        <span>🐻</span>
-        <h3>ALLIEVI</h3>
-      </div>
-
-      <div class="giocatori">
-        <div class="giocatore">Barone Christian</div>
-        <div class="giocatore">Bellomi Riccardo</div>
-        <div class="giocatore">Cantoia Riccardo</div>
-        <div class="giocatore">Corvese Riccardo</div>
-        <div class="giocatore">Croce Enea</div>
-        <div class="giocatore">Curatolo Simone</div>
-        <div class="giocatore">Mazzuchelli Davide</div>
-        <div class="giocatore">Modica Lorenzo</div>
-        <div class="giocatore">Mora Gabriele</div>
-        <div class="giocatore">Pagliazzo Andrea</div>
-        <div class="giocatore">Stramandino Christian</div>
-        <div class="giocatore">Toninelli Ismaele</div>
-        <div class="giocatore">Toninelli Luca</div>
-        <div class="giocatore">Vaquina Sheron</div>
-      </div>
-    </div>
-
-
-    <!-- GIOVANISSIMI -->
-    <div class="categoria">
-      <div class="categoria-header">
-        <span>🐻</span>
-        <h3>GIOVANISSIMI</h3>
-      </div>
-
-      <div class="giocatori">
-        <div class="giocatore">Francesco Conti</div>
-        <div class="giocatore">Antonio Manzo</div>
-        <div class="giocatore">Adriano Perez Delgado</div>
-        <div class="giocatore">Adam Baya</div>
-        <div class="giocatore">Ayoub Bazzari</div>
-        <div class="giocatore">Tommaso Saralli</div>
-        <div class="giocatore">Joel Ndreka</div>
-        <div class="giocatore">Greco Gabriele</div>
-        <div class="giocatore">Adam Bazari</div>
-        <div class="giocatore">Francesco Petrillo</div>
-        <div class="giocatore">Gabriel Marotta</div>
-        <div class="giocatore">Matteo Quartesan</div>
-        <div class="giocatore">Momo</div>
-        <div class="giocatore">Reda Afofou</div>
-        <div class="giocatore">Suhail El Houat</div>
-        <div class="giocatore">Ruben Iavicoli</div>
-        <div class="giocatore">Jeremy Martinelli</div>
-        <div class="giocatore">Rehan Rathugamage</div>
-        <div class="giocatore">Adam Triki</div>
-        <div class="giocatore">Rayane Maliki</div>
-        <div class="giocatore">Mohammad</div>
-        <div class="giocatore">Ibrahim Mbow</div>
-        <div class="giocatore">Davide Mora</div>
-        <div class="giocatore">Leonardo Fornarelli</div>
-      </div>
-    </div>
-
-
-    <!-- ESORDIENTI PURO -->
-    <div class="categoria">
-      <div class="categoria-header">
-        <span>🐻</span>
-        <h3>ESORDIENTI PURO</h3>
-      </div>
-
-      <div class="giocatori">
-        <div class="giocatore">Ronnie Borgese</div>
-        <div class="giocatore">Gionatan Leon Vanetti</div>
-        <div class="giocatore">Mattia Biasion</div>
-        <div class="giocatore">Gennaro Senese</div>
-        <div class="giocatore">Cicala Salvatore</div>
-        <div class="giocatore">Matvievew Demian</div>
-        <div class="giocatore">Carlo Mausullo</div>
-        <div class="giocatore">Andrea Zavattini</div>
-        <div class="giocatore">Medina Mattia</div>
-        <div class="giocatore">Gabriele Farinello</div>
-        <div class="giocatore">Francesco Guidetti</div>
-        <div class="giocatore">Manuel Lancia</div>
-      </div>
-    </div>
-
-
-    <!-- ESORDIENTI MISTO -->
-    <div class="categoria">
-      <div class="categoria-header">
-        <span>🐻</span>
-        <h3>ESORDIENTI MISTO</h3>
-      </div>
-
-      <div class="giocatori">
-        <div class="giocatore">Nicolò Marsala</div>
-        <div class="giocatore">Birro Stefano</div>
-        <div class="giocatore">Simone Scavazza</div>
-        <div class="giocatore">Emanuele Creola</div>
-        <div class="giocatore">Eros Priore</div>
-        <div class="giocatore">Sebastian Trofimuk</div>
-        <div class="giocatore">Ottavio Baronti</div>
-        <div class="giocatore">Francesco Mantegazza</div>
-        <div class="giocatore">Andrea Lettieri</div>
-        <div class="giocatore">Francesco Bongiorno</div>
-        <div class="giocatore">Mattia Chirra</div>
-        <div class="giocatore">Bjordi Doci</div>
-        <div class="giocatore">Yassine Elkbiba</div>
-        <div class="giocatore">Ilias El Makoudi</div>
-        <div class="giocatore">Saad El Makoudi</div>
-        <div class="giocatore">Lorenzo Nicolosi</div>
-        <div class="giocatore">Pietro Fornara</div>
-        <div class="giocatore">Mersie Maloku</div>
-      </div>
-    </div>
-
   </div>
-</section>
-  <section id="news">
-    <h2>Ultime news</h2>
-    <div class="grid">
-      <div class="card accent"><h3>Grande vittoria nel derby!</h3><p>I Beavers conquistano tre punti importantissimi.</p></div>
-      <div class="card accent"><h3>Nuovi arrivi in squadra</h3><p>Diamo il benvenuto ai nuovi giocatori della famiglia Beavers.</p></div>
-      <div class="card accent"><h3>Allenamenti</h3><p>Segui qui tutti gli aggiornamenti della squadra.</p></div>
-    </div>
-  </section>
 
-  <section id="contatti">
-    <h2>Contatti</h2>
-    <div class="card">
-      <p>📧 info@beaverscalcio.it</p>
-      <p>📱 +39 333 1234567</p>
-      <p>📍 Milano</p>
-    </div>
-  </section>
-</main>
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="logo.jpeg" alt="Beavers">
+        <div><strong>BEAVERS</strong><span>CALCIO</span></div>
+      </div>
+      <nav>
+        <button data-view="dashboard" class="nav-btn active">⌂ <span>Dashboard</span></button>
+        <button data-view="teams" class="nav-btn">👥 <span>Le mie squadre</span></button>
+        <button data-view="calendar" class="nav-btn">▣ <span>Calendario</span></button>
+        <button data-view="trainings" class="nav-btn">🏃 <span>Allenamenti</span></button>
+                <button data-view="players" class="nav-btn">● <span>Giocatori</span></button>
+        <button data-view="evaluations" class="nav-btn">★ <span>Valutazioni</span></button>
+        <button data-view="stats" class="nav-btn">▥ <span>Statistiche</span></button>
+        <button data-view="notes" class="nav-btn">▤ <span>Note</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button id="importBtn" class="nav-btn">⇧ <span>Importa Excel</span></button>
+        <button id="exportBtn" class="nav-btn">⇩ <span>Esporta dati</span></button>
+        <button id="settingsBtn" class="nav-btn">⚙ <span>Impostazioni</span></button>
+        <button id="logoutBtn" class="nav-btn">↪ <span>Esci</span></button>
+      </div>
+      <input id="excelInput" type="file" accept=".xlsx,.xls" multiple hidden>
+    </aside>
 
-<footer>© 2026 Beavers Calcio — Passione, squadra, carattere.</footer>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <button id="mobileMenu" class="hamburger">☰</button>
+          <h2 id="pageTitle">Benvenuto, Mister!</h2>
+          <p id="pageSubtitle">Area allenatori Beavers Calcio</p>
+        </div>
+        <div class="user-box">
+          <span id="modeBadge">DEMO</span>
+          <span id="userName">Mister</span>
+          <img src="logo.jpeg" alt="">
+        </div>
+      </header>
+      <section id="content"></section>
+    </main>
+  </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDeYA7gHnSLnJmvxYE8JUq7kdaEe5UP45I",
-    authDomain: "beavers-calcio.firebaseapp.com",
-    projectId: "beavers-calcio",
-    storageBucket: "beavers-calcio.firebasestorage.app",
-    messagingSenderId: "1060673090722",
-    appId: "1:1060673090722:web:a92417a4605e88ee98d3fb",
-    measurementId: "G-DJY63QBVWZ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const loginForm = document.getElementById("login-form");
-  const loginMessage = document.getElementById("login-message");
-  const areaAllenatori = document.getElementById("area-allenatori");
-  const loginBox = document.getElementById("login-box");
-  const logoutBtn = document.getElementById("logout-btn");
-
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-
-    loginMessage.textContent = "Accesso in corso...";
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-
-      loginMessage.textContent = "Accesso effettuato!";
-    } catch (error) {
-      loginMessage.textContent = "Email o password non corrette.";
-    }
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      loginBox.style.display = "none";
-      areaAllenatori.style.display = "block";
-    } else {
-      loginBox.style.display = "block";
-      areaAllenatori.style.display = "none";
-    }
-  });
-
-  logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-  });
-</script>
+  <div id="toast" class="toast"></div>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
