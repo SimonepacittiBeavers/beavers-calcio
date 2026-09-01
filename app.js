@@ -35,9 +35,6 @@ function loadLocal(){
     notes:[]
   };
 }
-
-function saveLocal(){
-
 function saveLocal(){
   localStorage.setItem("beaversData",JSON.stringify(local));
 }
