@@ -81,7 +81,6 @@ async function boot(){
 
   showApp();
 };
-};
   $("#logoutBtn").onclick=async()=>{if(auth&&window.fb) await window.fb.signOut(auth); else showLogin();};
   document.querySelectorAll(".nav-btn[data-view]").forEach(b=>b.onclick=()=>navigate(b.dataset.view));
   $("#importBtn").onclick=()=>$("#excelInput").click();
