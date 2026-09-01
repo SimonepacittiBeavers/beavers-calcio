@@ -229,6 +229,7 @@ async function handleExcel(e){
       const wb=XLSX.read(await file.arrayBuffer(),{cellDates:true});
       const ws=wb.Sheets["ANAGRAFICA GIOCATORE"]||wb.Sheets[wb.SheetNames[0]];
       const rows=XLSX.utils.sheet_to_json(ws,{defval:null,raw:true});
+      local.players = local.players.filter(p => p.sourceExcel !== file.name);
 
       const filename=file.name.toLowerCase();
       let teamId;
