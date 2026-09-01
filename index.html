@@ -276,5 +276,64 @@
 </main>
 
 <footer>© 2026 Beavers Calcio — Passione, squadra, carattere.</footer>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDeYA7gHnSLnJmvxYE8JUq7kdaEe5UP45I",
+    authDomain: "beavers-calcio.firebaseapp.com",
+    projectId: "beavers-calcio",
+    storageBucket: "beavers-calcio.firebasestorage.app",
+    messagingSenderId: "1060673090722",
+    appId: "1:1060673090722:web:a92417a4605e88ee98d3fb",
+    measurementId: "G-DJY63QBVWZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const loginForm = document.getElementById("login-form");
+  const loginMessage = document.getElementById("login-message");
+  const areaAllenatori = document.getElementById("area-allenatori");
+  const loginBox = document.getElementById("login-box");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    loginMessage.textContent = "Accesso in corso...";
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
+      loginMessage.textContent = "Accesso effettuato!";
+    } catch (error) {
+      loginMessage.textContent = "Email o password non corrette.";
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginBox.style.display = "none";
+      areaAllenatori.style.display = "block";
+    } else {
+      loginBox.style.display = "block";
+      areaAllenatori.style.display = "none";
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+  });
+</script>
 </body>
 </html>
