@@ -246,7 +246,6 @@ if (filename.includes("alliev")) {
   toast(`File non riconosciuto: ${file.name}`);
   continue;
 }
-      else teamId="esordienti-misto";
 
       for(const r of rows){
         const rawName=r["NOME COGNOME"];
