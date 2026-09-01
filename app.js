@@ -358,4 +358,3 @@ boot();
 async function cloudWriteMany(collectionName, items){
   for(const item of items) await cloudWrite(collectionName,item);
 }
-}
