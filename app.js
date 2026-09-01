@@ -25,16 +25,17 @@ function loadLocal(){
   const raw = localStorage.getItem("beaversData");
   if(raw) return JSON.parse(raw);
   return {
-    players: [
-      {id:"p1",name:"Marco Rossi",year:2014,teamId:"esordienti-misto",role:"Centrocampista",foot:"D",registered:true},
-      {id:"p2",name:"Luca Bianchi",year:2014,teamId:"esordienti-misto",role:"Difensore",foot:"D",registered:true},
-      {id:"p3",name:"Andrea Verdi",year:2012,teamId:"giovanissimi",role:"Attaccante",foot:"S",registered:true},
-      {id:"p4",name:"Paolo Neri",year:2011,teamId:"allievi",role:"Portiere",foot:"D",registered:true}
-    ],
-    trainings:[], trainingRecords:[], matches:[], matchRecords:[],
-    evaluations:[], potentials:[], notes:[]
-  };
-}
+    return {
+  players:[],
+  trainings:[],
+  trainingRecords:[],
+  matches:[],
+  matchRecords:[],
+  evaluations:[],
+  potentials:[],
+  notes:[]
+};
+
 function saveLocal(){
   localStorage.setItem("beaversData",JSON.stringify(local));
 }
