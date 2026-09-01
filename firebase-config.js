@@ -1,5 +1,5 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyDeYA7g8GhSnLJmJvxYE8JUq7kdaEe5UP45I",
+  apiKey: "AIzaSyDeYA7gHnSLnJmvxYE8JUq7kdaEe5UP45I",
   authDomain: "beavers-calcio.firebaseapp.com",
   projectId: "beavers-calcio",
   storageBucket: "beavers-calcio.firebasestorage.app",
