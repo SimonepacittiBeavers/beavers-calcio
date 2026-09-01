@@ -306,7 +306,13 @@ if (filename.includes("alliev")) {
   }
   e.target.value="";
 }
-function normalizeYear(v){if(!v)return ""; if(v instanceof Date)return v.getFullYear(); const s=String(v); const m=s.match(/(20\d{2})/); return m?m[1]:s}
+function normalizeYear(v){
+  if(!v)return "";
+  if(v instanceof Date)return v.getFullYear();
+  const s=String(v);
+  const m=s.match(/(20\d{2})/);
+  return m?m[1]:"";
+}
 function exportData(){
   const blob=new Blob([JSON.stringify(local,null,2)],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`beavers-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href);
