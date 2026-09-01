@@ -12,7 +12,7 @@ const potentialMeanings = {
   4:"Futuro prima squadra",5:"Da coinvolgere subito"
 };
 
-let db = null, auth = null, currentUser = null;
+let db = null, auth = null, currentUser = null, demoMode = false;
 let local = loadLocal();
 let state = {view:"dashboard", selectedTeam:"all", selectedPlayer:null};
 
@@ -47,8 +47,20 @@ async function boot(){
       const {getFirestore,collection,getDocs,addDoc,setDoc,doc,deleteDoc}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js");
       const app=initializeApp(firebaseConfig); auth=getAuth(app); db=getFirestore(app);
       window.fb={GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut,collection,getDocs,addDoc,setDoc,doc,deleteDoc};
-      onAuthStateChanged(auth, async u=>{ if(u){currentUser=u; await syncFromCloud(); showApp();} else showLogin(); });
-      $("#loginBtn").onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast(e.message));
+      onAuthStateChanged(auth, async u=>{
+    if(demoMode) return;
+    if(u){
+        currentUser=u;
+        await syncFromCloud();
+        showApp();
+    }else{
+        showLogin();
+    }
+});
+     $("#loginBtn").onclick=()=>{
+    demoMode = false;
+    signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast(e.message));
+};
       $("#loginHint").textContent="Accesso Google attivo. I dati vengono salvati nel database Firebase.";
     }catch(e){console.error(e); $("#loginHint").textContent="Configurazione cloud non valida: puoi usare la demo."; }
   } else {
@@ -58,6 +70,7 @@ async function boot(){
   console.log("DEMO: app.js caricato");
   $("#demoBtn").onclick=function(e){
   e.preventDefault();
+    demoMode = true;
   currentUser={
     displayName:"Mister Demo",
     email:"demo@beavers.local"
