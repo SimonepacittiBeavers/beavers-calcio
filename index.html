@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Beavers Calcio</title>
+  <meta name="description" content="Beavers Calcio — passione, squadra, carattere.">
+  <style>
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f4f4;color:#151515}
+    header{position:sticky;top:0;z-index:10;background:#080808;color:white;display:flex;align-items:center;justify-content:space-between;padding:14px 5%;border-bottom:2px solid #f5c400}
+    .brand{font-weight:900;font-size:22px;color:#f5c400;letter-spacing:1px}
+    nav a{color:white;text-decoration:none;margin:0 12px;font-weight:700;font-size:14px}
+    nav a:hover{color:#f5c400}
+    .hero{min-height:72vh;background:#111 url('assets/hero-design.png') center/cover no-repeat;display:flex;align-items:flex-end}
+    .overlay{width:100%;padding:80px 7%;background:linear-gradient(transparent,rgba(0,0,0,.82));color:white}
+    .overlay h1{font-size:clamp(46px,8vw,92px);margin:0;color:white;line-height:.9}
+    .overlay h1 span{color:#f5c400}.overlay p{font-size:20px;max-width:650px}
+    .btn{display:inline-block;background:#f5c400;color:#111;text-decoration:none;padding:14px 22px;font-weight:900;border-radius:5px}
+    section{padding:60px 7%;max-width:1200px;margin:auto}
+    h2{font-size:34px;margin-top:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:white;padding:25px;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+    .card h3{margin-top:0;color:#111}.accent{border-top:5px solid #f5c400}
+    .match{background:#101010;color:white}.match strong{color:#f5c400}
+    footer{background:#080808;color:white;padding:35px 7%;text-align:center;border-top:2px solid #f5c400}
+    @media(max-width:800px){nav{display:none}.grid{grid-template-columns:1fr}.hero{min-height:65vh}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">🐻 BEAVERS CALCIO</div>
+  <nav>
+    <a href="#home">HOME</a><a href="#chi-siamo">CHI SIAMO</a><a href="#rosa">ROSA</a>
+    <a href="#partite">PARTITE</a><a href="#news">NEWS</a><a href="#contatti">CONTATTI</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <div class="overlay">
+      <h1>BEAVERS <span>CALCIO</span></h1>
+      <p><b>PASSIONE. SQUADRA. CARATTERE.</b><br>
+      Non siamo solo una squadra. Siamo una famiglia, dentro e fuori dal campo.</p>
+      <a class="btn" href="#chi-siamo">SCOPRI DI PIÙ →</a>
+    </div>
+  </section>
+
+  <section id="chi-siamo">
+    <h2>La nostra identità</h2>
+    <div class="grid">
+      <div class="card accent"><h3>⚽ PASSIONE</h3><p>Viviamo il calcio con cuore, energia e voglia di migliorare.</p></div>
+      <div class="card accent"><h3>🤝 SQUADRA</h3><p>Uniti dentro e fuori dal campo. Prima la squadra, sempre.</p></div>
+      <div class="card accent"><h3>🎯 OBIETTIVI</h3><p>Lavoriamo ogni giorno per crescere e raggiungere nuovi traguardi.</p></div>
+    </div>
+  </section>
+
+  <section id="partite">
+    <h2>Prossima partita</h2>
+    <div class="card match">
+      <h3>BEAVERS CALCIO <strong>VS</strong> RED FOX FC</h3>
+      <p>📅 Domenica 26 Maggio — 15:00</p>
+      <p>📍 Campo Comunale, Via dello Sport 1</p>
+      <a class="btn" href="#contatti">INFO PARTITA</a>
+    </div>
+  </section>
+
+  <section id="rosa">
+    <h2>Rosa</h2>
+    <div class="grid">
+      <div class="card"><h3>Christian Barone</h3><p>Attaccante</p></div>
+      <div class="card"><h3>Riccardo Bellomi</h3><p>Difensore</p></div>
+      <div class="card"><h3>Nuovi giocatori</h3><p>Questa sezione può essere aggiornata con tutta la rosa.</p></div>
+    </div>
+  </section>
+
+  <section id="news">
+    <h2>Ultime news</h2>
+    <div class="grid">
+      <div class="card accent"><h3>Grande vittoria nel derby!</h3><p>I Beavers conquistano tre punti importantissimi.</p></div>
+      <div class="card accent"><h3>Nuovi arrivi in squadra</h3><p>Diamo il benvenuto ai nuovi giocatori della famiglia Beavers.</p></div>
+      <div class="card accent"><h3>Allenamenti</h3><p>Segui qui tutti gli aggiornamenti della squadra.</p></div>
+    </div>
+  </section>
+
+  <section id="contatti">
+    <h2>Contatti</h2>
+    <div class="card">
+      <p>📧 info@beaverscalcio.it</p>
+      <p>📱 +39 333 1234567</p>
+      <p>📍 Milano</p>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Beavers Calcio — Passione, squadra, carattere.</footer>
+</body>
+</html>
