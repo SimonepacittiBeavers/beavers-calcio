@@ -55,6 +55,7 @@ async function boot(){
     $("#loginBtn").style.display="none";
     $("#loginHint").textContent="Modalità demo locale: i dati restano nel browser. Per il multi-allenatore configura Firebase.";
   }
+  console.log("DEMO: app.js caricato");
   $("#demoBtn").onclick=function(e){
   e.preventDefault();
   currentUser={
