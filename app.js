@@ -187,6 +187,95 @@ function renderEvaluations(){
   return `<div class="toolbar"><button class="btn btn-primary" id="addEvaluation">＋ Nuova valutazione</button></div><div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Giocatore</th><th>Tecnica</th><th>Tattica</th><th>Fisica</th><th>Mentalità</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">Nessuna valutazione.</td></tr>'}</tbody></table></div></div>`;
 }
 function renderStats(){
+  const players=accessiblePlayers();
+
+  const cards=players.map(p=>{
+    const matchRecords=local.matchRecords.filter(
+      r=>r.playerId===p.id
+    );
+
+    const trainingRecords=local.trainingRecords.filter(
+      r=>r.playerId===p.id
+    );
+
+    const presenzePartita=matchRecords.filter(
+      r=>r.status==="present"
+    ).length;
+
+    const presenzeAllenamento=trainingRecords.filter(
+      r=>r.status==="present"
+    ).length;
+
+    const gol=matchRecords.reduce(
+      (tot,r)=>tot+Number(r.goals||0),0
+    );
+
+    const assist=matchRecords.reduce(
+      (tot,r)=>tot+Number(r.assists||0),0
+    );
+
+    const partiteGiocate=matchRecords.length;
+
+    const percentualePartite=partiteGiocate
+      ? Math.round((presenzePartita/partiteGiocate)*100)
+      : 0;
+
+    return `
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <h3 style="margin:0">${esc(p.name)}</h3>
+            <div class="muted">
+              ${esc(teamName(p.teamId))}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+
+          <div class="stat">
+            <b>${presenzePartita}</b>
+            <span>Presenze partita</span>
+          </div>
+
+          <div class="stat">
+            <b>${presenzeAllenamento}</b>
+            <span>Presenze allenamento</span>
+          </div>
+
+          <div class="stat">
+            <b>${gol}</b>
+            <span>Gol</span>
+          </div>
+
+          <div class="stat">
+            <b>${assist}</b>
+            <span>Assist</span>
+          </div>
+
+        </div>
+
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee">
+          <b>${percentualePartite}%</b>
+          <span class="muted"> presenza alle partite</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div class="toolbar">
+      <h2>Statistiche giocatori</h2>
+    </div>
+
+    ${
+      cards ||
+      `<div class="card">
+        <p>Nessun giocatore disponibile.</p>
+      </div>`
+    }
+  `;
+}
   const cards=visibleTeams().map(t=>{const ps=teamPlayers(t.id), ids=ps.map(p=>p.id), rec=local.trainingRecords.filter(r=>ids.includes(r.playerId)); const total=rec.length, present=rec.filter(r=>r.status==="present").length; const pct=total?Math.round(present/total*100):0; return `<div class="card"><h3>${t.name}</h3><div class="stat"><div class="num">${pct}%</div><div class="label">presenza allenamenti</div></div><div class="kpi-bar"><span style="width:${pct}%"></span></div><p class="muted">${ps.length} giocatori · ${accessibleMatches().filter(m=>m.teamId===t.id).length} partite</p></div>`}).join("");
   return `<div class="grid grid-2">${cards}</div>`;
 }
