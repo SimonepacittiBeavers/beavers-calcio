@@ -265,6 +265,125 @@ function openMatch(){
   d.querySelector("#saveM").onclick=async()=>{const x={id:"m"+Date.now(),date:$("#mDate").value,teamId:$("#mTeam").value,opponent:$("#mOpp").value};if(!canAccessTeam(x.teamId))return toast("Squadra non autorizzata");local.matches.push(x);teamPlayers(x.teamId).forEach(p=>local.matchRecords.push({id:`${x.id}_${p.id}`,matchId:x.id,playerId:p.id,teamId:x.teamId,called:false,starter:false,minutes:0}));saveLocal();await cloudWrite("matches",x);await cloudWriteMany("matchRecords",local.matchRecords.filter(r=>r.matchId===x.id));d.remove();render();toast("Partita creata")};
 }
 function openMatchRecords(id){
+  const m=local.matches.find(x=>x.id===id);
+  if(!m || !canAccessTeam(m.teamId)) return toast("Non hai accesso a questa partita");
+
+  const ps=teamPlayers(m.teamId);
+
+  const d=modal(`
+    <div class="modal-head">
+      <h3>${esc(m.date)} - ${esc(m.opponent)}</h3>
+      <button class="close">×</button>
+    </div>
+
+    <div class="card">
+      ${ps.map(p=>{
+        const r=local.matchRecords.find(
+          x=>x.matchId===id && x.playerId===p.id
+        ) || {};
+
+        return `
+          <div class="form-grid" style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #ddd">
+            
+            <div>
+              <b>${esc(p.name)}</b>
+            </div>
+
+            <div class="field">
+              <label>Presenza</label>
+              <select class="mr-status" data-player="${p.id}">
+                <option value="present" ${(r.status||"present")==="present"?"selected":""}>Presente</option>
+                <option value="absent" ${(r.status||"")==="absent"?"selected":""}>Assente</option>
+                <option value="justified" ${(r.status||"")==="justified"?"selected":""}>Giustificato</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Titolare</label>
+              <select class="mr-starter" data-player="${p.id}">
+                <option value="false" ${!r.starter?"selected":""}>No</option>
+                <option value="true" ${r.starter?"selected":""}>Sì</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Minuti</label>
+              <input 
+                class="mr-minutes" 
+                data-player="${p.id}"
+                type="number"
+                min="0"
+                value="${Number(r.minutes||0)}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Gol</label>
+              <input 
+                class="mr-goals"
+                data-player="${p.id}"
+                type="number"
+                min="0"
+                value="${Number(r.goals||0)}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Assist</label>
+              <input 
+                class="mr-assists"
+                data-player="${p.id}"
+                type="number"
+                min="0"
+                value="${Number(r.assists||0)}"
+              >
+            </div>
+
+          </div>
+        `;
+      }).join("")}
+
+      <div style="margin-top:20px;text-align:right">
+        <button class="btn btn-primary" id="saveMR">
+          Salva statistiche
+        </button>
+      </div>
+    </div>
+  `);
+
+  d.querySelector("#saveMR").onclick=async()=>{
+    for(const p of ps){
+
+      let r=local.matchRecords.find(
+        x=>x.matchId===id && x.playerId===p.id
+      );
+
+      if(!r){
+        r={
+          id:"mr"+Date.now()+Math.random().toString(36).slice(2),
+          matchId:id,
+          playerId:p.id,
+          teamId:m.teamId
+        };
+        local.matchRecords.push(r);
+      }
+
+      r.teamId=m.teamId;
+      r.status=d.querySelector(`.mr-status[data-player="${p.id}"]`).value;
+      r.starter=d.querySelector(`.mr-starter[data-player="${p.id}"]`).value==="true";
+      r.minutes=Number(d.querySelector(`.mr-minutes[data-player="${p.id}"]`).value||0);
+      r.goals=Number(d.querySelector(`.mr-goals[data-player="${p.id}"]`).value||0);
+      r.assists=Number(d.querySelector(`.mr-assists[data-player="${p.id}"]`).value||0);
+
+      await cloudWrite("matchRecords",r);
+    }
+
+    saveLocal();
+    d.remove();
+    render();
+    toast("Statistiche partita salvate");
+  };
+}
   const m=local.matches.find(x=>x.id===id);if(!m||!canAccessTeam(m.teamId))return toast("Non hai accesso a questa partita");
   const ps=teamPlayers(m.teamId), d=modal(`<div class="modal-head"><h3>${esc(m.date)} — ${esc(m.opponent)}</h3><button class="close">×</button></div><div style="margin-top:14px">${ps.map(p=>{const r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id)||{};return `<div style="display:grid;grid-template-columns:1fr 80px 80px 90px;gap:8px;align-items:center;border-bottom:1px solid var(--border);padding:9px 0"><b>${esc(p.name)}</b><label><input type="checkbox" class="called" data-p="${p.id}" ${r.called?"checked":""}> Conv.</label><label><input type="checkbox" class="starter" data-p="${p.id}" ${r.starter?"checked":""}> Tit.</label><input class="mins" data-p="${p.id}" type="number" min="0" value="${r.minutes||0}" placeholder="min"></div>`}).join("")}</div><div style="margin-top:18px;text-align:right"><button class="btn btn-primary" id="saveMR">Salva</button></div>`);
   d.querySelector("#saveMR").onclick=async()=>{ps.forEach(p=>{let r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id);if(!r){r={id:`${id}_${p.id}`,matchId:id,playerId:p.id,teamId:m.teamId};local.matchRecords.push(r)}r.called=d.querySelector(`.called[data-p="${p.id}"]`).checked;r.starter=d.querySelector(`.starter[data-p="${p.id}"]`).checked;r.minutes=Number(d.querySelector(`.mins[data-p="${p.id}"]`).value||0)});saveLocal();await cloudWriteMany("matchRecords",local.matchRecords.filter(r=>r.matchId===id));d.remove();render();toast("Dati partita salvati")};
