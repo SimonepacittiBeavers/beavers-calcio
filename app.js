@@ -384,10 +384,6 @@ function openMatchRecords(id){
     toast("Statistiche partita salvate");
   };
 }
-  const m=local.matches.find(x=>x.id===id);if(!m||!canAccessTeam(m.teamId))return toast("Non hai accesso a questa partita");
-  const ps=teamPlayers(m.teamId), d=modal(`<div class="modal-head"><h3>${esc(m.date)} — ${esc(m.opponent)}</h3><button class="close">×</button></div><div style="margin-top:14px">${ps.map(p=>{const r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id)||{};return `<div style="display:grid;grid-template-columns:1fr 80px 80px 90px;gap:8px;align-items:center;border-bottom:1px solid var(--border);padding:9px 0"><b>${esc(p.name)}</b><label><input type="checkbox" class="called" data-p="${p.id}" ${r.called?"checked":""}> Conv.</label><label><input type="checkbox" class="starter" data-p="${p.id}" ${r.starter?"checked":""}> Tit.</label><input class="mins" data-p="${p.id}" type="number" min="0" value="${r.minutes||0}" placeholder="min"></div>`}).join("")}</div><div style="margin-top:18px;text-align:right"><button class="btn btn-primary" id="saveMR">Salva</button></div>`);
-  d.querySelector("#saveMR").onclick=async()=>{ps.forEach(p=>{let r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id);if(!r){r={id:`${id}_${p.id}`,matchId:id,playerId:p.id,teamId:m.teamId};local.matchRecords.push(r)}r.called=d.querySelector(`.called[data-p="${p.id}"]`).checked;r.starter=d.querySelector(`.starter[data-p="${p.id}"]`).checked;r.minutes=Number(d.querySelector(`.mins[data-p="${p.id}"]`).value||0)});saveLocal();await cloudWriteMany("matchRecords",local.matchRecords.filter(r=>r.matchId===id));d.remove();render();toast("Dati partita salvati")};
-}
 function openEvaluation(){
   const players=accessiblePlayers();
   const d=modal(`<div class="modal-head"><h3>Valutazione trimestrale</h3><button class="close">×</button></div><div class="form-grid" style="margin-top:18px">
