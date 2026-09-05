@@ -276,9 +276,6 @@ function renderStats(){
     }
   `;
 }
-  const cards=visibleTeams().map(t=>{const ps=teamPlayers(t.id), ids=ps.map(p=>p.id), rec=local.trainingRecords.filter(r=>ids.includes(r.playerId)); const total=rec.length, present=rec.filter(r=>r.status==="present").length; const pct=total?Math.round(present/total*100):0; return `<div class="card"><h3>${t.name}</h3><div class="stat"><div class="num">${pct}%</div><div class="label">presenza allenamenti</div></div><div class="kpi-bar"><span style="width:${pct}%"></span></div><p class="muted">${ps.length} giocatori · ${accessibleMatches().filter(m=>m.teamId===t.id).length} partite</p></div>`}).join("");
-  return `<div class="grid grid-2">${cards}</div>`;
-}
 function renderNotes(){
   const rows=accessibleNotes().slice().reverse().map(n=>`<div class="note"><b>${esc(n.title||"Nota")}</b> <span class="muted">· ${esc(n.date||"")}</span><div>${esc(n.text)}</div><div style="margin-top:8px"><button class="btn btn-small btn-danger delete-note" data-id="${n.id}">Elimina</button></div></div>`).join("");
   return `<div class="toolbar"><button class="btn btn-primary" id="addNote">＋ Nuova nota</button></div><div class="card">${rows||'<div class="empty">Nessuna nota.</div>'}</div>`;
