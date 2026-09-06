@@ -187,7 +187,7 @@ function renderEvaluations(){
   return `<div class="toolbar"><button class="btn btn-primary" id="addEvaluation">＋ Nuova valutazione</button></div><div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Giocatore</th><th>Tecnica</th><th>Tattica</th><th>Fisica</th><th>Mentalità</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">Nessuna valutazione.</td></tr>'}</tbody></table></div></div>`;
 }
 function renderStats(){
-  const players=accessiblePlayers();
+const players=accessiblePlayers().filter(p=>!state.selectedTeam || p.teamId===state.selectedTeam);
 
   const cards=players.map(p=>{
     const matchRecords=local.matchRecords.filter(
