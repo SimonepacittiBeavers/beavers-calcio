@@ -187,7 +187,9 @@ function renderEvaluations(){
   return `<div class="toolbar"><button class="btn btn-primary" id="addEvaluation">＋ Nuova valutazione</button></div><div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Giocatore</th><th>Tecnica</th><th>Tattica</th><th>Fisica</th><th>Mentalità</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">Nessuna valutazione.</td></tr>'}</tbody></table></div></div>`;
 }
 function renderStats(){
-const players=accessiblePlayers().filter(p=>!state.selectedTeam || p.teamId===state.selectedTeam);
+  const players=accessiblePlayers().filter(
+    p=>!state.selectedTeam || p.teamId===state.selectedTeam
+  );
 
   const cards=players.map(p=>{
     const matchRecords=local.matchRecords.filter(
@@ -198,85 +200,318 @@ const players=accessiblePlayers().filter(p=>!state.selectedTeam || p.teamId===st
       r=>r.playerId===p.id
     );
 
-    const presenzePartita=matchRecords.filter(
-      r=>r.status==="present"
-    ).length;
+    /* =========================
+       PRESENZE ALLENAMENTI
+       ========================= */
 
     const presenzeAllenamento=trainingRecords.filter(
       r=>r.status==="present"
     ).length;
 
-    const gol=matchRecords.reduce(
-      (tot,r)=>tot+Number(r.goals||0),0
-    );
+    const allenamentiTotali=trainingRecords.length;
 
-    const assist=matchRecords.reduce(
-      (tot,r)=>tot+Number(r.assists||0),0
-    );
-
-    const partiteGiocate=matchRecords.length;
-
-    const percentualePartite=partiteGiocate
-      ? Math.round((presenzePartita/partiteGiocate)*100)
+    const percentualeAllenamento=allenamentiTotali
+      ? Math.round(
+          (presenzeAllenamento/allenamentiTotali)*100
+        )
       : 0;
+
+    const allenamentiAssenti=Math.max(
+      0,
+      allenamentiTotali-presenzeAllenamento
+    );
+
+    /* =========================
+       MINUTI PARTITA
+       ========================= */
+
+    // Allievi e Giovanissimi = 90 minuti
+    // Esordienti = 80 minuti
+
+    const durataPartita=
+      (p.teamId==="allievi" || p.teamId==="giovanissimi")
+        ? 90
+        : 80;
+
+    const partiteTotali=matchRecords.length;
+
+    const minutiTotali=
+      partiteTotali*durataPartita;
+
+    const minutiGiocati=matchRecords.reduce(
+      (tot,r)=>tot+Number(r.minutes||0),
+      0
+    );
+
+    const minutiNonGiocati=Math.max(
+      0,
+      minutiTotali-minutiGiocati
+    );
+
+    const percentualeMinuti=minutiTotali
+      ? Math.min(
+          100,
+          Math.round(
+            (minutiGiocati/minutiTotali)*100
+          )
+        )
+      : 0;
+
+    /* =========================
+       GRAFICO PRESENZE
+       ========================= */
+
+    const trainingChartStyle=`
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background:conic-gradient(
+        #2457a6 ${percentualeAllenamento}%,
+        #d9dee5 ${percentualeAllenamento}% 100%
+      );
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    `;
+
+    /* =========================
+       GRAFICO MINUTI
+       ========================= */
+
+    const minutesChartStyle=`
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background:conic-gradient(
+        #ffc400 ${percentualeMinuti}%,
+        #d9dee5 ${percentualeMinuti}% 100%
+      );
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    `;
 
     return `
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+
+        <!-- NOME GIOCATORE -->
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:18px;
+        ">
+
           <div>
-            <h3 style="margin:0">${esc(p.name)}</h3>
+
+            <h3 style="margin:0">
+              ${esc(p.name)}
+            </h3>
+
             <div class="muted">
               ${esc(teamName(p.teamId))}
             </div>
+
           </div>
+
         </div>
+
+
+        <!-- DUE GRAFICI -->
 
         <div class="grid grid-2">
 
-          <div class="stat">
-            <b>${presenzePartita}</b>
-            <span>Presenze partita</span>
+
+          <!-- =====================
+               PRESENZE ALLENAMENTI
+               ===================== -->
+
+          <div style="text-align:center">
+
+            <div style="
+              font-weight:700;
+              margin-bottom:12px;
+            ">
+              Presenze allenamenti
+            </div>
+
+
+            <div style="${trainingChartStyle}">
+
+              <div style="
+                width:105px;
+                height:105px;
+                border-radius:50%;
+                background:white;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+              ">
+
+                <strong style="font-size:24px">
+                  ${percentualeAllenamento}%
+                </strong>
+
+                <span class="muted">
+                  ${presenzeAllenamento} / ${allenamentiTotali}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div style="
+              margin-top:12px;
+              display:flex;
+              justify-content:space-between;
+              font-size:14px;
+            ">
+
+              <span>
+                🔵 Presenti
+              </span>
+
+              <strong>
+                ${presenzeAllenamento}
+              </strong>
+
+            </div>
+
+
+            <div style="
+              display:flex;
+              justify-content:space-between;
+              font-size:14px;
+            ">
+
+              <span>
+                ⚪ Assenti
+              </span>
+
+              <strong>
+                ${allenamentiAssenti}
+              </strong>
+
+            </div>
+
           </div>
 
-          <div class="stat">
-            <b>${presenzeAllenamento}</b>
-            <span>Presenze allenamento</span>
-          </div>
 
-          <div class="stat">
-            <b>${gol}</b>
-            <span>Gol</span>
-          </div>
+          <!-- =====================
+               MINUTI GIOCATI
+               ===================== -->
 
-          <div class="stat">
-            <b>${assist}</b>
-            <span>Assist</span>
+          <div style="text-align:center">
+
+            <div style="
+              font-weight:700;
+              margin-bottom:12px;
+            ">
+              Minuti giocati
+            </div>
+
+
+            <div style="${minutesChartStyle}">
+
+              <div style="
+                width:105px;
+                height:105px;
+                border-radius:50%;
+                background:white;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+              ">
+
+                <strong style="font-size:24px">
+                  ${percentualeMinuti}%
+                </strong>
+
+                <span class="muted">
+                  ${minutiGiocati} / ${minutiTotali}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div style="
+              margin-top:12px;
+              display:flex;
+              justify-content:space-between;
+              font-size:14px;
+            ">
+
+              <span>
+                🟡 Minuti giocati
+              </span>
+
+              <strong>
+                ${minutiGiocati}
+              </strong>
+
+            </div>
+
+
+            <div style="
+              display:flex;
+              justify-content:space-between;
+              font-size:14px;
+            ">
+
+              <span>
+                ⚪ Minuti non giocati
+              </span>
+
+              <strong>
+                ${minutiNonGiocati}
+              </strong>
+
+            </div>
+
           </div>
 
         </div>
 
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee">
-          <b>${percentualePartite}%</b>
-          <span class="muted"> presenza alle partite</span>
-        </div>
       </div>
     `;
   }).join("");
 
+
+  /* =========================
+     TITOLO STATISTICHE
+     ========================= */
+
   return `
     <div class="toolbar">
-      <h2>Statistiche giocatori</h2>
+
+      <h2>
+        Statistiche giocatori
+      </h2>
+
     </div>
 
     ${
       cards ||
-      `<div class="card">
-        <p>Nessun giocatore disponibile.</p>
-      </div>`
+      `
+        <div class="card">
+
+          <p>
+            Nessun giocatore disponibile.
+          </p>
+
+        </div>
+      `
     }
   `;
 }
-function renderNotes(){
   const rows=accessibleNotes().slice().reverse().map(n=>`<div class="note"><b>${esc(n.title||"Nota")}</b> <span class="muted">· ${esc(n.date||"")}</span><div>${esc(n.text)}</div><div style="margin-top:8px"><button class="btn btn-small btn-danger delete-note" data-id="${n.id}">Elimina</button></div></div>`).join("");
   return `<div class="toolbar"><button class="btn btn-primary" id="addNote">＋ Nuova nota</button></div><div class="card">${rows||'<div class="empty">Nessuna nota.</div>'}</div>`;
 }
