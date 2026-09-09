@@ -512,9 +512,6 @@ function renderStats(){
     }
   `;
 }
-  const rows=accessibleNotes().slice().reverse().map(n=>`<div class="note"><b>${esc(n.title||"Nota")}</b> <span class="muted">· ${esc(n.date||"")}</span><div>${esc(n.text)}</div><div style="margin-top:8px"><button class="btn btn-small btn-danger delete-note" data-id="${n.id}">Elimina</button></div></div>`).join("");
-  return `<div class="toolbar"><button class="btn btn-primary" id="addNote">＋ Nuova nota</button></div><div class="card">${rows||'<div class="empty">Nessuna nota.</div>'}</div>`;
-}
 function playerName(id){return local.players.find(p=>p.id===id)?.name||"Giocatore";}
 function calcAttendance(){const ps=accessiblePlayers().map(p=>p.id); const r=local.trainingRecords.filter(x=>ps.includes(x.playerId)); if(!r.length)return 0; return Math.round(r.filter(x=>x.status==="present").length/r.length*100)}
 
