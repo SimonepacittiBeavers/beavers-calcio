@@ -11,7 +11,7 @@ const USERS = {
   "simone.pacitti@godanaa.com":{role:"admin", teamId:null, label:"Amministratore"},
   "jack.sgarbossa03@gmail.com":{role:"mister", teamId:"giovanissimi", label:"Mister Giovanissimi"},
   "leo.piralli03@gmail.com":{role:"mister", teamId:"allievi", label:"Mister Allievi"},
-  "marsel74@gmail.com":{role:"mister", teamId:"esordienti-misto", label:"Mister Esordienti Misto"},
+  "fabio.marsel74@gmail.com":{role:"mister", teamId:"esordienti-misto", label:"Mister Esordienti Misto"},
   "centroedile1986@gmail.com":{role:"mister", teamId:"esordienti-puro", label:"Mister Esordienti Puro"}
 };
 
