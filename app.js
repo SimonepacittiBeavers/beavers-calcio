@@ -243,7 +243,15 @@ function renderStats(){
       (tot,r)=>tot+Number(r.minutes||0),
       0
     );
+const gol=matchRecords.reduce(
+  (tot,r)=>tot+Number(r.goals||0),
+  0
+);
 
+const assist=matchRecords.reduce(
+  (tot,r)=>tot+Number(r.assists||0),
+  0
+);
     const minutiNonGiocati=Math.max(
       0,
       minutiTotali-minutiGiocati
