@@ -579,21 +579,6 @@ function renderStats(){
     </div>
   `;
 }
-  return `
-    <div class="toolbar">
-      <button class="btn btn-primary" id="addNote">
-        + Nuova nota
-      </button>
-    </div>
-
-    <div class="card">
-      ${
-        rows ||
-        `<p>Nessuna nota disponibile.</p>`
-      }
-    </div>
-  `;
-}
 function playerName(id){return local.players.find(p=>p.id===id)?.name||"Giocatore";}
 function calcAttendance(){const ps=accessiblePlayers().map(p=>p.id); const r=local.trainingRecords.filter(x=>ps.includes(x.playerId)); if(!r.length)return 0; return Math.round(r.filter(x=>x.status==="present").length/r.length*100)}
 
