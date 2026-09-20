@@ -579,22 +579,6 @@ function renderStats(){
     </div>
   `;
 }
-  const rows=accessibleNotes()
-    .slice()
-    .reverse()
-    .map(n=>`
-      <div class="note">
-        <b>${esc(n.title||"Nota")}</b>
-        <span class="muted">
-          ${esc(n.date||"")}
-        </span>
-        <div style="margin-top:6px">
-          ${esc(n.text||"")}
-        </div>
-      </div>
-    `)
-    .join("");
-
   return `
     <div class="toolbar">
       <button class="btn btn-primary" id="addNote">
