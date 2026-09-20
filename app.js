@@ -187,6 +187,103 @@ function renderEvaluations(){
   const rows=accessibleEvaluations().slice().reverse().map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(playerName(e.playerId))}</td><td>${e.tech||"—"}</td><td>${e.tactic||"—"}</td><td>${e.phys||"—"}</td><td>${e.mental||"—"}</td><td><button class="btn btn-small btn-danger delete-evaluation" data-id="${e.id}">Elimina</button></td></tr>`).join("");
   return `<div class="toolbar"><button class="btn btn-primary" id="addEvaluation">＋ Nuova valutazione</button></div><div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Giocatore</th><th>Tecnica</th><th>Tattica</th><th>Fisica</th><th>Mentalità</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">Nessuna valutazione.</td></tr>'}</tbody></table></div></div>`;
 }
+function renderMatches(){
+
+  const matches=accessibleMatches()
+    .slice()
+    .sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+
+  const rows=matches.map(m=>`
+    <tr>
+
+      <td>
+        <b>${esc(m.date||"")}</b>
+      </td>
+
+      <td>
+        ${esc(m.opponent||"")}
+      </td>
+
+      <td>
+        ${esc(teamName(m.teamId))}
+      </td>
+
+      <td>
+        <button
+          class="btn btn-small btn-primary open-match"
+          data-id="${m.id}"
+        >
+          Gestisci
+        </button>
+      </td>
+
+      <td>
+        <button
+          class="btn btn-small btn-danger delete-match"
+          data-id="${m.id}"
+        >
+          Elimina
+        </button>
+      </td>
+
+    </tr>
+  `).join("");
+
+  return `
+
+    <div class="toolbar">
+
+      <button
+        class="btn btn-primary"
+        id="addMatch"
+      >
+        ＋ Nuova partita
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <div class="table-wrap">
+
+        <table class="table">
+
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Avversario</th>
+              <th>Squadra</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              rows ||
+              `
+                <tr>
+                  <td
+                    colspan="5"
+                    class="empty"
+                  >
+                    Nessuna partita registrata.
+                  </td>
+                </tr>
+              `
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+}
 function renderStats(){
 
   const players=accessiblePlayers().filter(
