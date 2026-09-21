@@ -8,15 +8,16 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return signedIn()
-        && request.auth.token.email == 'simone.pacitti@godanaa.com';
+      return signedIn() &&
+        request.auth.token.email == 'simone.pacitti@godanaa.com';
     }
 
     function isMister() {
       return signedIn() && (
         request.auth.token.email == 'jack.sgarbossa03@gmail.com' ||
         request.auth.token.email == 'leo.piralli03@gmail.com' ||
-        request.auth.token.email == 'marsel74@gmail.com'
+        request.auth.token.email == 'marsel74@gmail.com' ||
+        request.auth.token.email == 'centroedile1986@gmail.com'
       );
     }
 
@@ -27,14 +28,81 @@ service cloud.firestore {
           ? 'allievi'
           : request.auth.token.email == 'marsel74@gmail.com'
             ? 'esordienti-misto'
-            : '';
+            : request.auth.token.email == 'centroedile1986@gmail.com'
+              ? 'esordienti-puro'
+              : '';
     }
 
-    function canAccessTeam(teamId) {
+    function canReadTeam(teamId) {
+      return isAdmin() || (isMister() && teamId == userTeam());
+    }
+
+    function canCreateTeam(teamId) {
+      return isAdmin() || (isMister() && teamId == userTeam());
+    }
+
+    function canUpdateTeam(oldTeamId, newTeamId) {
       return isAdmin() || (
         isMister() &&
-        teamId == userTeam()
+        oldTeamId == userTeam() &&
+        newTeamId == userTeam()
       );
+    }
+
+    match /players/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /trainings/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /matches/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /evaluations/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /trainingRecords/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /matchRecords/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /notes/{id} {
+      allow read: if canReadTeam(resource.data.teamId);
+      allow create: if canCreateTeam(request.resource.data.teamId);
+      allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
+      allow delete: if canReadTeam(resource.data.teamId);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}      );
     }
 
     match /players/{id} {
