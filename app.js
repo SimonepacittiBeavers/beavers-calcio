@@ -8,11 +8,11 @@ const teams = [
 ];
 
 const USERS = {
-  "simone.pacitti@godanaa.com":{role:"admin", teamId:null, label:"Amministratore"},
-  "jack.sgarbossa03@gmail.com":{role:"mister", teamId:"giovanissimi", label:"Mister Giovanissimi"},
-  "leo.piralli03@gmail.com":{role:"mister", teamId:"allievi", label:"Mister Allievi"},
-  "fabio.marsel74@gmail.com":{role:"mister", teamId:"esordienti-misto", label:"Mister Esordienti Misto"},
-  "centroedile1986@gmail.com":{role:"mister", teamId:"esordienti-puro", label:"Mister Esordienti Puro"}
+  "simone.pacitti@godanaa.com": {role:"admin", teamId:null, label:"Amministratore"},
+  "jack.sgarbossa03@gmail.com": {role:"mister", teamId:"giovanissimi", label:"Mister Giovanissimi"},
+  "leo.piralli03@gmail.com": {role:"mister", teamId:"allievi", label:"Mister Allievi"},
+  "marsel74@gmail.com": {role:"mister", teamId:"esordienti-misto", label:"Mister Esordienti Misto"},
+  "centroedile1986@gmail.com": {role:"mister", teamId:"esordienti-puro", label:"Mister Esordienti Puro"}
 };
 
 const potentialMeanings = {
@@ -188,396 +188,85 @@ function renderEvaluations(){
   return `<div class="toolbar"><button class="btn btn-primary" id="addEvaluation">＋ Nuova valutazione</button></div><div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Giocatore</th><th>Tecnica</th><th>Tattica</th><th>Fisica</th><th>Mentalità</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">Nessuna valutazione.</td></tr>'}</tbody></table></div></div>`;
 }
 function renderStats(){
-
   const players=accessiblePlayers().filter(
-    p=>!state.selectedTeam || p.teamId===state.selectedTeam
+    p=>!state.selectedTeam || state.selectedTeam==="all" || p.teamId===state.selectedTeam
   );
 
   const cards=players.map(p=>{
+    const matchRecords=local.matchRecords.filter(r=>r.playerId===p.id);
+    const trainingRecords=local.trainingRecords.filter(r=>r.playerId===p.id);
 
-    const matchRecords=local.matchRecords.filter(
-      r=>r.playerId===p.id
-    );
-
-    const trainingRecords=local.trainingRecords.filter(
-      r=>r.playerId===p.id
-    );
-
-    /* =====================
-       PRESENZE ALLENAMENTO
-       ===================== */
-
-    const presenzeAllenamento=trainingRecords.filter(
-      r=>r.status==="present"
-    ).length;
-
+    const presenzeAllenamento=trainingRecords.filter(r=>r.status==="present").length;
     const allenamentiTotali=trainingRecords.length;
-
     const percentualeAllenamento=allenamentiTotali
-      ? Math.round(
-          (presenzeAllenamento/allenamentiTotali)*100
-        )
+      ? Math.round((presenzeAllenamento/allenamentiTotali)*100)
       : 0;
 
-
-    /* =====================
-       MINUTI PARTITA
-       ===================== */
-
-    const durataPartita=
-      (p.teamId==="allievi" || p.teamId==="giovanissimi")
-        ? 90
-        : 80;
-
+    const durataPartita=(p.teamId==="allievi" || p.teamId==="giovanissimi") ? 90 : 80;
     const partiteTotali=matchRecords.length;
-
-    const minutiTotali=
-      partiteTotali*durataPartita;
-
-    const minutiGiocati=matchRecords.reduce(
-      (tot,r)=>tot+Number(r.minutes||0),
-      0
-    );
-
-
+    const minutiTotali=partiteTotali*durataPartita;
+    const minutiGiocati=matchRecords.reduce((tot,r)=>tot+Number(r.minutes||0),0);
     const percentualeMinuti=minutiTotali
-      ? Math.min(
-          100,
-          Math.round(
-            (minutiGiocati/minutiTotali)*100
-          )
-        )
+      ? Math.min(100,Math.round((minutiGiocati/minutiTotali)*100))
       : 0;
 
-
-    /* =====================
-       GOL E ASSIST
-       ===================== */
-
-    const gol=matchRecords.reduce(
-      (tot,r)=>tot+Number(r.goals||0),
-      0
-    );
-
-    const assist=matchRecords.reduce(
-      (tot,r)=>tot+Number(r.assists||0),
-      0
-    );
-
-
-    /* =====================
-       GRAFICO ALLENAMENTI
-       ===================== */
+    const gol=matchRecords.reduce((tot,r)=>tot+Number(r.goals||0),0);
+    const assist=matchRecords.reduce((tot,r)=>tot+Number(r.assists||0),0);
 
     const trainingChartStyle=`
-      width:150px;
-      height:150px;
-      border-radius:50%;
-      background:conic-gradient(
-        #2457a6 ${percentualeAllenamento}%,
-        #d9dee5 ${percentualeAllenamento}% 100%
-      );
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:150px;height:150px;border-radius:50%;
+      background:conic-gradient(#2457a6 ${percentualeAllenamento}%,#d9dee5 ${percentualeAllenamento}% 100%);
+      margin:0 auto;display:flex;align-items:center;justify-content:center;
     `;
-
-
-    /* =====================
-       GRAFICO MINUTI
-       ===================== */
-
     const minutesChartStyle=`
-      width:150px;
-      height:150px;
-      border-radius:50%;
-      background:conic-gradient(
-        #ffc400 ${percentualeMinuti}%,
-        #d9dee5 ${percentualeMinuti}% 100%
-      );
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:150px;height:150px;border-radius:50%;
+      background:conic-gradient(#ffc400 ${percentualeMinuti}%,#d9dee5 ${percentualeMinuti}% 100%);
+      margin:0 auto;display:flex;align-items:center;justify-content:center;
     `;
 
+    const minutiPerPartita=matchRecords.slice().sort((a,b)=>{
+      const ma=local.matches.find(m=>m.id===a.matchId);
+      const mb=local.matches.find(m=>m.id===b.matchId);
+      return String(mb?.date||"").localeCompare(String(ma?.date||""));
+    }).map(r=>{
+      const match=local.matches.find(m=>m.id===r.matchId);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee;gap:12px"><div><strong>${esc(match?.date||"")}</strong><div class="muted">vs ${esc(match?.opponent||"Partita")}</div></div><strong style="white-space:nowrap;font-size:16px">${Number(r.minutes||0)} min</strong></div>`;
+    }).join("");
 
-    /* =====================
-       MINUTI PER PARTITA
-       ===================== */
-
-    const minutiPerPartita=matchRecords
-      .slice()
-      .sort((a,b)=>{
-
-        const ma=local.matches.find(
-          m=>m.id===a.matchId
-        );
-
-        const mb=local.matches.find(
-          m=>m.id===b.matchId
-        );
-
-        return String(mb?.date||"")
-          .localeCompare(
-            String(ma?.date||"")
-          );
-
-      })
-      .map(r=>{
-
-        const match=local.matches.find(
-          m=>m.id===r.matchId
-        );
-
-        const data=match?.date||"";
-        const avversario=match?.opponent||"Partita";
-
-        return `
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:10px 0;
-            border-bottom:1px solid #eee;
-            gap:12px;
-          ">
-
-            <div>
-              <strong>${esc(data)}</strong>
-
-              <div class="muted">
-                vs ${esc(avversario)}
-              </div>
-            </div>
-
-            <strong style="
-              white-space:nowrap;
-              font-size:16px;
-            ">
-              ${Number(r.minutes||0)} min
-            </strong>
-
-          </div>
-        `;
-
-      })
-      .join("");
-
-
-    return `
-      <div class="card">
-
-        <!-- NOME GIOCATORE -->
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          margin-bottom:18px;
-        ">
-
-          <div>
-
-            <h3 style="margin:0">
-              ${esc(p.name)}
-            </h3>
-
-            <div class="muted">
-              ${esc(teamName(p.teamId))}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- DUE GRAFICI -->
-
-        <div class="grid grid-2">
-
-
-          <!-- PRESENZE ALLENAMENTI -->
-
-          <div style="text-align:center">
-
-            <div style="
-              font-weight:700;
-              margin-bottom:12px;
-            ">
-              Presenze allenamenti
-            </div>
-
-            <div style="${trainingChartStyle}">
-
-              <div style="
-                width:105px;
-                height:105px;
-                border-radius:50%;
-                background:white;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                justify-content:center;
-              ">
-
-                <strong style="font-size:24px">
-                  ${percentualeAllenamento}%
-                </strong>
-
-                <span class="muted">
-                  ${presenzeAllenamento} / ${allenamentiTotali}
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- MINUTI PARTITA -->
-
-          <div style="text-align:center">
-
-            <div style="
-              font-weight:700;
-              margin-bottom:12px;
-            ">
-              Minuti giocati
-            </div>
-
-            <div style="${minutesChartStyle}">
-
-              <div style="
-                width:105px;
-                height:105px;
-                border-radius:50%;
-                background:white;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                justify-content:center;
-              ">
-
-                <strong style="font-size:24px">
-                  ${percentualeMinuti}%
-                </strong>
-
-                <span class="muted">
-                  ${minutiGiocati} / ${minutiTotali} min
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- GOL E ASSIST -->
-
-        <div style="
-          margin-top:22px;
-          padding:16px 0;
-          border-top:1px solid #eee;
-          border-bottom:1px solid #eee;
-          display:flex;
-          justify-content:center;
-          gap:40px;
-          font-size:17px;
-        ">
-
-          <span>
-            ⚽ Gol:
-            <strong>${gol}</strong>
-          </span>
-
-          <span>
-            🎯 Assist:
-            <strong>${assist}</strong>
-          </span>
-
-        </div>
-
-
-        <!-- MINUTI PER PARTITA -->
-
-        <div style="
-          margin-top:20px;
-        ">
-
-          <div style="
-            font-weight:700;
-            font-size:17px;
-            margin-bottom:8px;
-          ">
-            Minuti giocati per partita
-          </div>
-
-          ${
-            minutiPerPartita ||
-            `<div class="muted">
-              Nessuna partita registrata.
-            </div>`
-          }
-
-        </div>
-
-
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <div><h3 style="margin:0">${esc(p.name)}</h3><div class="muted">${esc(teamName(p.teamId))}</div></div>
       </div>
-    `;
-
+      <div class="grid grid-2">
+        <div style="text-align:center">
+          <div style="font-weight:700;margin-bottom:12px">Presenze allenamenti</div>
+          <div style="${trainingChartStyle}"><div style="width:105px;height:105px;border-radius:50%;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center"><strong style="font-size:24px">${percentualeAllenamento}%</strong><span class="muted">${presenzeAllenamento} / ${allenamentiTotali}</span></div></div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-weight:700;margin-bottom:12px">Minuti giocati</div>
+          <div style="${minutesChartStyle}"><div style="width:105px;height:105px;border-radius:50%;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center"><strong style="font-size:24px">${percentualeMinuti}%</strong><span class="muted">${minutiGiocati} / ${minutiTotali} min</span></div></div>
+        </div>
+      </div>
+      <div style="margin-top:22px;padding:16px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;display:flex;justify-content:center;gap:40px;font-size:17px">
+        <span>⚽ Gol: <strong>${gol}</strong></span>
+        <span>🎯 Assist: <strong>${assist}</strong></span>
+      </div>
+      <div style="margin-top:20px">
+        <div style="font-weight:700;font-size:17px;margin-bottom:8px">Minuti giocati per partita</div>
+        ${minutiPerPartita || '<div class="muted">Nessuna partita registrata.</div>'}
+      </div>
+    </div>`;
   }).join("");
 
+  const filter=isAdmin()
+    ? `<select id="teamFilter"><option value="all">Tutte le squadre</option>${teams.map(t=>`<option value="${t.id}" ${state.selectedTeam===t.id?"selected":""}>${esc(t.name)}</option>`).join("")}</select>`
+    : `<span class="btn btn-secondary">${esc(teamName(permissions.teamId))}</span>`;
 
-  return `
-    <div class="toolbar">
-
-      ${
-        isAdmin()
-          ? `
-            <select id="teamFilter">
-              <option value="all">
-                Tutte le squadre
-              </option>
-
-              ${teams.map(t=>`
-                <option
-                  value="${t.id}"
-                  ${state.selectedTeam===t.id?"selected":""}
-                >
-                  ${esc(t.name)}
-                </option>
-              `).join("")}
-
-            </select>
-          `
-          : `
-            <span class="btn btn-secondary">
-              ${esc(teamName(permissions.teamId))}
-            </span>
-          `
-      }
-
-    </div>
-
-    <div class="grid grid-2">
-
-      ${
-        cards ||
-        `
-          <div class="card">
-            <p>Nessun giocatore disponibile.</p>
-          </div>
-        `
-      }
-
-    </div>
-  `;
+  return `<div class="toolbar">${filter}</div><div class="grid grid-2">${cards||'<div class="card"><p>Nessun giocatore disponibile.</p></div>'}</div>`;
+}
+function renderNotes(){
+  const rows=accessibleNotes().slice().reverse().map(n=>`<div class="note"><b>${esc(n.title||"Nota")}</b> <span class="muted">· ${esc(n.date||"")}</span><div>${esc(n.text)}</div><div style="margin-top:8px"><button class="btn btn-small btn-danger delete-note" data-id="${n.id}">Elimina</button></div></div>`).join("");
+  return `<div class="toolbar"><button class="btn btn-primary" id="addNote">＋ Nuova nota</button></div><div class="card">${rows||'<div class="empty">Nessuna nota.</div>'}</div>`;
 }
 function playerName(id){return local.players.find(p=>p.id===id)?.name||"Giocatore";}
 function calcAttendance(){const ps=accessiblePlayers().map(p=>p.id); const r=local.trainingRecords.filter(x=>ps.includes(x.playerId)); if(!r.length)return 0; return Math.round(r.filter(x=>x.status==="present").length/r.length*100)}
@@ -651,122 +340,35 @@ function openMatch(){
 }
 function openMatchRecords(id){
   const m=local.matches.find(x=>x.id===id);
-  if(!m || !canAccessTeam(m.teamId)) return toast("Non hai accesso a questa partita");
-
+  if(!m||!canAccessTeam(m.teamId))return toast("Non hai accesso a questa partita");
   const ps=teamPlayers(m.teamId);
-
-  const d=modal(`
-    <div class="modal-head">
-      <h3>${esc(m.date)} - ${esc(m.opponent)}</h3>
-      <button class="close">×</button>
-    </div>
-
-    <div class="card">
-      ${ps.map(p=>{
-        const r=local.matchRecords.find(
-          x=>x.matchId===id && x.playerId===p.id
-        ) || {};
-
-        return `
-          <div class="form-grid" style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #ddd">
-            
-            <div>
-              <b>${esc(p.name)}</b>
-            </div>
-
-            <div class="field">
-              <label>Presenza</label>
-              <select class="mr-status" data-player="${p.id}">
-                <option value="present" ${(r.status||"present")==="present"?"selected":""}>Presente</option>
-                <option value="absent" ${(r.status||"")==="absent"?"selected":""}>Assente</option>
-                <option value="justified" ${(r.status||"")==="justified"?"selected":""}>Giustificato</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>Titolare</label>
-              <select class="mr-starter" data-player="${p.id}">
-                <option value="false" ${!r.starter?"selected":""}>No</option>
-                <option value="true" ${r.starter?"selected":""}>Sì</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>Minuti</label>
-              <input 
-                class="mr-minutes" 
-                data-player="${p.id}"
-                type="number"
-                min="0"
-                value="${Number(r.minutes||0)}"
-              >
-            </div>
-
-            <div class="field">
-              <label>Gol</label>
-              <input 
-                class="mr-goals"
-                data-player="${p.id}"
-                type="number"
-                min="0"
-                value="${Number(r.goals||0)}"
-              >
-            </div>
-
-            <div class="field">
-              <label>Assist</label>
-              <input 
-                class="mr-assists"
-                data-player="${p.id}"
-                type="number"
-                min="0"
-                value="${Number(r.assists||0)}"
-              >
-            </div>
-
-          </div>
-        `;
-      }).join("")}
-
-      <div style="margin-top:20px;text-align:right">
-        <button class="btn btn-primary" id="saveMR">
-          Salva statistiche
-        </button>
-      </div>
-    </div>
-  `);
+  const d=modal(`<div class="modal-head"><h3>${esc(m.date)} — ${esc(m.opponent)}</h3><button class="close">×</button></div>
+  <div style="margin-top:14px">${ps.map(p=>{
+    const r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id)||{};
+    return `<div style="display:grid;grid-template-columns:1fr 100px 100px 90px 70px 70px;gap:8px;align-items:center;border-bottom:1px solid var(--border);padding:10px 0">
+      <b>${esc(p.name)}</b>
+      <label><select class="mr-status" data-p="${p.id}"><option value="present" ${(r.status||"present")==="present"?"selected":""}>Presente</option><option value="absent" ${r.status==="absent"?"selected":""}>Assente</option><option value="justified" ${r.status==="justified"?"selected":""}>Giust.</option></select></label>
+      <label><select class="mr-starter" data-p="${p.id}"><option value="false" ${!r.starter?"selected":""}>Non tit.</option><option value="true" ${r.starter?"selected":""}>Titolare</option></select></label>
+      <input class="mr-minutes" data-p="${p.id}" type="number" min="0" value="${Number(r.minutes||0)}" placeholder="min">
+      <input class="mr-goals" data-p="${p.id}" type="number" min="0" value="${Number(r.goals||0)}" placeholder="gol">
+      <input class="mr-assists" data-p="${p.id}" type="number" min="0" value="${Number(r.assists||0)}" placeholder="assist">
+    </div>`;
+  }).join("")}</div>
+  <div style="margin-top:18px;text-align:right"><button class="btn btn-primary" id="saveMR">Salva statistiche</button></div>`);
 
   d.querySelector("#saveMR").onclick=async()=>{
     for(const p of ps){
-
-      let r=local.matchRecords.find(
-        x=>x.matchId===id && x.playerId===p.id
-      );
-
-      if(!r){
-        r={
-          id:"mr"+Date.now()+Math.random().toString(36).slice(2),
-          matchId:id,
-          playerId:p.id,
-          teamId:m.teamId
-        };
-        local.matchRecords.push(r);
-      }
-
+      let r=local.matchRecords.find(x=>x.matchId===id&&x.playerId===p.id);
+      if(!r){r={id:`${id}_${p.id}`,matchId:id,playerId:p.id,teamId:m.teamId};local.matchRecords.push(r)}
       r.teamId=m.teamId;
-      r.status=d.querySelector(`.mr-status[data-player="${p.id}"]`).value;
-      r.starter=d.querySelector(`.mr-starter[data-player="${p.id}"]`).value==="true";
-      r.minutes=Number(d.querySelector(`.mr-minutes[data-player="${p.id}"]`).value||0);
-      r.goals=Number(d.querySelector(`.mr-goals[data-player="${p.id}"]`).value||0);
-      r.assists=Number(d.querySelector(`.mr-assists[data-player="${p.id}"]`).value||0);
-
+      r.status=d.querySelector(`.mr-status[data-p="${p.id}"]`).value;
+      r.starter=d.querySelector(`.mr-starter[data-p="${p.id}"]`).value==="true";
+      r.minutes=Number(d.querySelector(`.mr-minutes[data-p="${p.id}"]`).value||0);
+      r.goals=Number(d.querySelector(`.mr-goals[data-p="${p.id}"]`).value||0);
+      r.assists=Number(d.querySelector(`.mr-assists[data-p="${p.id}"]`).value||0);
       await cloudWrite("matchRecords",r);
     }
-
-    saveLocal();
-    d.remove();
-    render();
-    toast("Statistiche partita salvate");
+    saveLocal();d.remove();render();toast("Statistiche partita salvate");
   };
 }
 function openEvaluation(){
