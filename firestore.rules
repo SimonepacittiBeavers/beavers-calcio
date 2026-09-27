@@ -16,7 +16,7 @@ service cloud.firestore {
       return signedIn() && (
         request.auth.token.email == 'jack.sgarbossa03@gmail.com' ||
         request.auth.token.email == 'leo.piralli03@gmail.com' ||
-        request.auth.token.email == 'marsel74@gmail.com' ||
+        request.auth.token.email == 'fabio.marsel74@gmail.com' ||
         request.auth.token.email == 'centroedile1986@gmail.com'
       );
     }
@@ -26,7 +26,7 @@ service cloud.firestore {
         ? 'giovanissimi'
         : request.auth.token.email == 'leo.piralli03@gmail.com'
           ? 'allievi'
-          : request.auth.token.email == 'marsel74@gmail.com'
+          : request.auth.token.email == 'fabio.marsel74@gmail.com'
             ? 'esordienti-misto'
             : request.auth.token.email == 'centroedile1986@gmail.com'
               ? 'esordienti-puro'
