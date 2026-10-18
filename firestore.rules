@@ -1,3 +1,4 @@
+
 rules_version = '2';
 
 service cloud.firestore {
@@ -12,15 +13,6 @@ service cloud.firestore {
         request.auth.token.email == 'simone.pacitti@godanaa.com';
     }
 
-    function isMister() {
-      return signedIn() && (
-        request.auth.token.email == 'jack.sgarbossa03@gmail.com' ||
-        request.auth.token.email == 'leo.piralli03@gmail.com' ||
-        request.auth.token.email == 'fabio.marsel74@gmail.com' ||
-        request.auth.token.email == 'centroedile1986@gmail.com'
-      );
-    }
-
     function userTeam() {
       return request.auth.token.email == 'jack.sgarbossa03@gmail.com'
         ? 'giovanissimi'
@@ -28,25 +20,35 @@ service cloud.firestore {
           ? 'allievi'
           : request.auth.token.email == 'fabio.marsel74@gmail.com'
             ? 'esordienti-misto'
-            : request.auth.token.email == 'centroedile1986@gmail.com'
+            : (
+                request.auth.token.email == 'centroedile1986@gmail.com' ||
+                request.auth.token.email == 'dominion307@gmail.com'
+              )
               ? 'esordienti-puro'
               : '';
     }
 
+    function isMister() {
+      return signedIn() && userTeam() != '';
+    }
+
     function canReadTeam(teamId) {
-      return isAdmin() || (isMister() && teamId == userTeam());
+      return isAdmin() ||
+        (isMister() && teamId == userTeam());
     }
 
     function canCreateTeam(teamId) {
-      return isAdmin() || (isMister() && teamId == userTeam());
+      return isAdmin() ||
+        (isMister() && teamId == userTeam());
     }
 
     function canUpdateTeam(oldTeamId, newTeamId) {
-      return isAdmin() || (
-        isMister() &&
-        oldTeamId == userTeam() &&
-        newTeamId == userTeam()
-      );
+      return isAdmin() ||
+        (
+          isMister() &&
+          oldTeamId == userTeam() &&
+          newTeamId == userTeam()
+        );
     }
 
     match /players/{id} {
@@ -96,69 +98,6 @@ service cloud.firestore {
       allow create: if canCreateTeam(request.resource.data.teamId);
       allow update: if canUpdateTeam(resource.data.teamId, request.resource.data.teamId);
       allow delete: if canReadTeam(resource.data.teamId);
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
-    }
-  }
-}      );
-    }
-
-    match /players/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /trainings/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /trainingRecords/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /matches/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /matchRecords/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /evaluations/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
-    }
-
-    match /notes/{id} {
-      allow read: if canAccessTeam(resource.data.teamId);
-      allow create: if canAccessTeam(request.resource.data.teamId);
-      allow update: if canAccessTeam(resource.data.teamId)
-                    && canAccessTeam(request.resource.data.teamId);
-      allow delete: if canAccessTeam(resource.data.teamId);
     }
 
     match /{document=**} {
