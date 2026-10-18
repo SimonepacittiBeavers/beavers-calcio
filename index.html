@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="it">
 <head>
@@ -25,22 +26,26 @@
         <img src="logo.jpeg" alt="Beavers">
         <div><strong>BEAVERS</strong><span>CALCIO</span></div>
       </div>
+
       <nav>
         <button data-view="dashboard" class="nav-btn active">⌂ <span>Dashboard</span></button>
         <button data-view="teams" class="nav-btn">👥 <span>Le mie squadre</span></button>
         <button data-view="calendar" class="nav-btn">▣ <span>Calendario</span></button>
         <button data-view="trainings" class="nav-btn">🏃 <span>Allenamenti</span></button>
-                <button data-view="players" class="nav-btn">● <span>Giocatori</span></button>
+        <button data-view="matches" class="nav-btn">⚽ <span>Partite</span></button>
+        <button data-view="players" class="nav-btn">● <span>Giocatori</span></button>
         <button data-view="evaluations" class="nav-btn">★ <span>Valutazioni</span></button>
         <button data-view="stats" class="nav-btn">▥ <span>Statistiche</span></button>
         <button data-view="notes" class="nav-btn">▤ <span>Note</span></button>
       </nav>
+
       <div class="sidebar-bottom">
         <button id="importBtn" class="nav-btn">⇧ <span>Importa Excel</span></button>
         <button id="exportBtn" class="nav-btn">⇩ <span>Esporta dati</span></button>
         <button id="settingsBtn" class="nav-btn">⚙ <span>Impostazioni</span></button>
         <button id="logoutBtn" class="nav-btn">↪ <span>Esci</span></button>
       </div>
+
       <input id="excelInput" type="file" accept=".xlsx,.xls" multiple hidden>
     </aside>
 
@@ -51,12 +56,14 @@
           <h2 id="pageTitle">Benvenuto, Mister!</h2>
           <p id="pageSubtitle">Area allenatori Beavers Calcio</p>
         </div>
+
         <div class="user-box">
           <span id="modeBadge">DEMO</span>
           <span id="userName">Mister</span>
           <img src="logo.jpeg" alt="">
         </div>
       </header>
+
       <section id="content"></section>
     </main>
   </div>
@@ -65,3 +72,4 @@
   <script type="module" src="app.js"></script>
 </body>
 </html>
+```
